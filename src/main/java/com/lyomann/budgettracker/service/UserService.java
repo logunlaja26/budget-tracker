@@ -12,7 +12,7 @@ public interface UserService {
 //    updating an entry for a particular user
 //    delete an entry
 
-    User updateUserEntries(User user); // should support save and update
+    void updateUserEntries(User user); // should support save and update
     Optional<User> fetchUser(String username);
     void deleteEntry(String username, String entryId);
 }

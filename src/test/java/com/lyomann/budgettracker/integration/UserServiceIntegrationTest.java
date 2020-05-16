@@ -16,11 +16,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static com.lyomann.budgettracker.document.Category.ENTERTAINMENT;
 import static com.lyomann.budgettracker.document.Category.SHOPPING;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 @ExtendWith(SpringExtension.class)
 @DataMongoTest
@@ -49,6 +53,26 @@ class UserServiceIntegrationTest {
 
         assertThat(user.isPresent()).isTrue();
         assertThat(user.get().getEntries().size()).isEqualTo(2);
+    }
+
+    @Test
+    void updateUserEntries() {
+        userService.updateUserEntries(createUserBuilder().entries(singletonList(
+                createEntry(10.11, SHOPPING, "Gas"))).build());
+        User updatedUser = getThisUser(USERNAME);
+        assertThat(updatedUser.getEntries().size()).isEqualTo(3);
+    }
+
+    @Test
+    void updateUserEntries_canSaveNewUsers() {
+        userService.updateUserEntries(User.builder().username("sam55").entries(singletonList(
+                createEntry(10.11, SHOPPING, "Gas"))).build());
+        User updatedUser = getThisUser("sam55");
+        assertThat(updatedUser.getEntries().size()).isEqualTo(1);
+    }
+
+    private User getThisUser(String username) {
+        return mongoTemplate.findOne(query(where("username").is(username)), User.class);
     }
 
     private User.UserBuilder createUserBuilder() {

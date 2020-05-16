@@ -17,9 +17,9 @@ import java.util.List;
 @Document(collection = "users")
 public class User {
     @Id
-    private String _id;
+    private String id;
 
-    @Indexed
+    @Indexed(unique = true)
     private String username;
 
     @Indexed
