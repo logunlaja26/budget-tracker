@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.time.LocalDate;
 
@@ -12,11 +12,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Entry {
-    private String entryId = ObjectId.get().toString();
-    private LocalDate date;
+public class Expense {
+    @Indexed(unique = true)
+    private Long expenseId;
+    private LocalDate transactionDate = LocalDate.now();
     private double amount;
-    private EntryType type;
     private Category category;
     private String description;
 }

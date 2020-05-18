@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,5 +25,6 @@ public class User {
     private String username;
 
     @Indexed
-    private List<Entry> entries;
+    @Builder.Default
+    private List<Expense> expenses = emptyList();
 }
