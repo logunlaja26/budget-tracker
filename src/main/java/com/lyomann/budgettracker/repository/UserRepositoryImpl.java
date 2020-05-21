@@ -2,10 +2,24 @@ package com.lyomann.budgettracker.repository;
 
 import com.lyomann.budgettracker.document.Expense;
 import com.lyomann.budgettracker.document.User;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
 
 import java.util.Optional;
 
-public class UserRepositoryImpl  implements UserRepository{
+import static org.springframework.data.mongodb.core.query.Criteria.*;
+import static org.springframework.data.mongodb.core.query.Query.*;
+
+public class UserRepositoryImpl implements UserRepository {
+
+    private MongoTemplate mongoTemplate;
+
+    public UserRepositoryImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void createUser(User user) {
@@ -18,8 +32,9 @@ public class UserRepositoryImpl  implements UserRepository{
     }
 
     @Override
-    public Optional findUserByUsername(String username) {
-        return Optional.empty();
+    public Optional<User> findUserByUsername(String username) {
+        User user = mongoTemplate.findOne(query(where("username").is(username)), User.class);
+        return Optional.ofNullable(user);
     }
 
     @Override
@@ -27,3 +42,4 @@ public class UserRepositoryImpl  implements UserRepository{
 
     }
 }
+

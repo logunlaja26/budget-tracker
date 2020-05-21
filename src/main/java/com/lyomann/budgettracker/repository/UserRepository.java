@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UserRepository {
     void createUser(User user);
     void updateExpenses(String username, Expense expense);
-    Optional findUserByUsername(String username);
+    Optional<User> findUserByUsername(String username);
     void deleteExpense(String username, long expenseId);
 
 }
