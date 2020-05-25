@@ -4,13 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
-
-import static java.util.Collections.emptyList;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +24,6 @@ public class User {
     private String username;
 
     @Indexed
-    @Builder.Default
-    private List<Expense> expenses = emptyList();
+    private List<ObjectId> expenseIds;
+
 }
