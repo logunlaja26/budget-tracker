@@ -10,4 +10,5 @@ public class Constants {
     public static final String EXPENSES_COLLECTION = "expenses";
 
     public static Query findByUsernameQuery(String username) { return query(where("username").is(username)); }
+    public static Query findByExpenseIdQuery(String expenseId) { return query(where("expenseId").is(expenseId)); }
 }
