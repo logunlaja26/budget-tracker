@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
@@ -13,12 +15,18 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "expenses")
 public class Expense {
 
-    @Indexed(unique = true)
-    private Long expenseId;
-    private LocalDate transactionDate;
+    @Id
+    private String expenseId;
+    @Indexed
+    private String username;
+    @Indexed
+    @Builder.Default
+    private LocalDate transactionDate = LocalDate.now();
     private double amount;
+    @Indexed
     private Category category;
     private String description;
 }
