@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @DataMongoTest
-public class UserRepositoryIntegrationTest {
+public class UserRepositoryImplTest {
 
     @Autowired
     MongoTemplate mongoTemplate;

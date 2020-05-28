@@ -19,12 +19,12 @@ import static com.lyomann.budgettracker.document.Category.*;
 import static java.time.Month.MAY;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataMongoTest
 @ExtendWith(SpringExtension.class)
-public class ExpenseRepositoryIntegrationTest {
+@DataMongoTest
+public class ExpenseRepositoryImplTest{
 
     @Autowired
-    MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
 
     private ExpenseRepository expenseRepository;
 
@@ -73,7 +73,7 @@ public class ExpenseRepositoryIntegrationTest {
 
     @Test
     void deleteExpense_removesOneExpenseFromGivenUser() {
-        expenseRepository.deleteExpense(expense3.getExpenseId());
+        expenseRepository.deleteExpense(USERNAME, expense3.getExpenseId());
 
         List<Expense> expenses = getExpensesForUser(USERNAME);
 

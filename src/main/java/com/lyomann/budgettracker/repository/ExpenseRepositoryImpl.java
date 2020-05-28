@@ -13,6 +13,7 @@ import java.time.Month;
 import java.util.List;
 
 import static com.lyomann.budgettracker.Constants.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Repository
 @RequiredArgsConstructor
@@ -36,16 +37,17 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public void deleteExpense(String expenseId) {
-        mongoTemplate.remove(findByExpenseIdQuery(expenseId), Expense.class);
+    public void deleteExpense(String username, String expenseId) {
+        Query usernameWithExpenseIdQuery = findByExpenseIdQuery(expenseId).addCriteria(where("username").is(username));
+        mongoTemplate.remove(usernameWithExpenseIdQuery, Expense.class);
     }
 
     @Override
     public List<Expense> getExpensesByCategoryAndMonth(String username, Category category, Month month) {
         LocalDate beginningOfTheMonth = LocalDate.of(LocalDate.now().getYear(), month, 1);
         Query query = findByUsernameQuery(username)
-                .addCriteria(Criteria.where("category").is(category))
-                .addCriteria(Criteria.where("transactionDate").gte(beginningOfTheMonth));
+                .addCriteria(where("category").is(category))
+                .addCriteria(where("transactionDate").gte(beginningOfTheMonth));
         return mongoTemplate.find(query, Expense.class);
     }
 }
