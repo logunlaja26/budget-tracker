@@ -1,7 +1,6 @@
 package com.lyomann.budgettracker.repository;
 
 import com.lyomann.budgettracker.document.Expense;
-import com.lyomann.budgettracker.document.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -70,7 +69,7 @@ public class ExpenseRepositoryImplTest {
 
     @Test
     void deleteExpense_removesOneExpenseFromGivenUser() {
-        expenseRepository.deleteExpense(expense3.getExpenseId());
+        expenseRepository.deleteExpense(USERNAME, expense3.getExpenseId());
 
         List<Expense> expenses = getExpensesForUser(USERNAME);
 
