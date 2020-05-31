@@ -11,7 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class ExpenseListDto {
+public class BudgetOverview {
     private String username;
-    private List<ExpenseDto> expenses;
+    private List<BudgetStats> budgetStats;
+
 }

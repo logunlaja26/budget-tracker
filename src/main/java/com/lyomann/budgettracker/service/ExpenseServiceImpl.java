@@ -4,6 +4,7 @@ import com.lyomann.budgettracker.document.Category;
 import com.lyomann.budgettracker.document.Expense;
 import com.lyomann.budgettracker.dto.ExpenseDto;
 import com.lyomann.budgettracker.dto.ExpenseListDto;
+import com.lyomann.budgettracker.exception.NoExpensesException;
 import com.lyomann.budgettracker.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -11,10 +12,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.lyomann.budgettracker.Constants.dateFormatter;
+import static java.util.Comparator.comparing;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +36,12 @@ public class ExpenseServiceImpl implements ExpenseService {
     public ExpenseListDto getExpenseHistory(String username) {
         List<Expense> expenses = expenseRepository.findAllExpensesByUsername(username);
 
+        if (expenses.isEmpty()) {
+            throw new NoExpensesException("The user " + username + " has no expenses");
+        }
+
         List<ExpenseDto> expenseDtos = expenses.stream()
+                .sorted(comparing(Expense::getTransactionDate).reversed())
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
 

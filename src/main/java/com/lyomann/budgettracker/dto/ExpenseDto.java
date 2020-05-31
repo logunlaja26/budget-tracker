@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class ExpenseDto {
-    String expenseId;
-    Category category;
-    double amount;
-    String description;
-    String transactionDate;
+    private String expenseId;
+    private Category category;
+    private double amount;
+    private String description;
+    private String transactionDate;
 }

@@ -5,13 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class ExpenseListDto {
-    private String username;
-    private List<ExpenseDto> expenses;
+public class BudgetStats {
+    String category;
+    double currentMonthAmount;
+    int maxThreshold;
 }

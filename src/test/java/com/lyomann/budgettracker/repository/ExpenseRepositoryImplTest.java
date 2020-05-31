@@ -19,9 +19,9 @@ import static com.lyomann.budgettracker.document.Category.*;
 import static java.time.Month.MAY;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
 @DataMongoTest
-public class ExpenseRepositoryImplTest{
+@ExtendWith(SpringExtension.class)
+public class ExpenseRepositoryImplTest {
 
     @Autowired
     private MongoTemplate mongoTemplate;
