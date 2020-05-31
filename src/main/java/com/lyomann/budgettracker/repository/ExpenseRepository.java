@@ -1,6 +1,5 @@
 package com.lyomann.budgettracker.repository;
 
-import com.lyomann.budgettracker.document.Category;
 import com.lyomann.budgettracker.document.Expense;
 
 import java.time.Month;
@@ -11,5 +10,5 @@ public interface ExpenseRepository {
     List<Expense> findAllExpensesByUsername(String username);
     Expense updateExpense(Expense expense);
     void deleteExpense(String expenseId);
-    List<Expense> getExpensesByCategoryAndMonth(String username, Category category, Month month);
+    List<Expense> getExpensesByCategoryAndMonth(String username, String category, Month month);
 }

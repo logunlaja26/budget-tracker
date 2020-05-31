@@ -25,6 +25,6 @@ public class Expense {
     private LocalDate transactionDate = LocalDate.now();
     private double amount;
     @Indexed
-    private Category category;
+    private String category;
     private String description;
 }

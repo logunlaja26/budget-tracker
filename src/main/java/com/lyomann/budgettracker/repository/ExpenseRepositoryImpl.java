@@ -1,6 +1,5 @@
 package com.lyomann.budgettracker.repository;
 
-import com.lyomann.budgettracker.document.Category;
 import com.lyomann.budgettracker.document.Expense;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -41,7 +40,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public List<Expense> getExpensesByCategoryAndMonth(String username, Category category, Month month) {
+    public List<Expense> getExpensesByCategoryAndMonth(String username, String category, Month month) {
         LocalDate beginningOfTheMonth = LocalDate.of(LocalDate.now().getYear(), month, 1);
         Query query = findByUsernameQuery(username)
                 .addCriteria(Criteria.where("category").is(category))

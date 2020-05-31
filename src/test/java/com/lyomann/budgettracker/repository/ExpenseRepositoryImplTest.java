@@ -1,6 +1,5 @@
 package com.lyomann.budgettracker.repository;
 
-import com.lyomann.budgettracker.document.Category;
 import com.lyomann.budgettracker.document.Expense;
 import com.lyomann.budgettracker.document.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,16 +14,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.lyomann.budgettracker.Constants.*;
-import static com.lyomann.budgettracker.document.Category.*;
 import static java.time.Month.MAY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
 @ExtendWith(SpringExtension.class)
-public class ExpenseRepositoryIntegrationTest {
+public class ExpenseRepositoryImplTest {
 
     @Autowired
-    MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
 
     private ExpenseRepository expenseRepository;
 
@@ -33,7 +31,6 @@ public class ExpenseRepositoryIntegrationTest {
 
     private final LocalDate todaysDate = LocalDate.of(2020, 5, 24);
 
-    private User bob123;
     private Expense expense1, expense2, expense3, expense4, expense5;
 
 
@@ -48,7 +45,7 @@ public class ExpenseRepositoryIntegrationTest {
 
     @Test
     void addExpense_savesNewExpenseToTheDatabase() {
-        expenseRepository.addExpense(createExpense(NEW_USERNAME, LocalDate.of(2020, 5, 23), 1200.00, SHOPPING, "Workout Equipment"));
+        expenseRepository.addExpense(createExpense(NEW_USERNAME, LocalDate.of(2020, 5, 23), 1200.00, "SHOPPING", "Workout Equipment"));
 
         List<Expense> expenses = getExpensesForUser(NEW_USERNAME);
 
@@ -78,12 +75,12 @@ public class ExpenseRepositoryIntegrationTest {
         List<Expense> expenses = getExpensesForUser(USERNAME);
 
         assertThat(expenses.size()).isEqualTo(3);
-        assertThat(expenses.get(2).getCategory()).isEqualTo(UTILITIES);
+        assertThat(expenses.get(2).getCategory()).isEqualTo("UTILITIES");
     }
 
     @Test
     void getExpensesByCategoryAndMonth() {
-        List<Expense> actualExpenses = expenseRepository.getExpensesByCategoryAndMonth(USERNAME, UTILITIES, MAY);
+        List<Expense> actualExpenses = expenseRepository.getExpensesByCategoryAndMonth(USERNAME, "UTILITIES", MAY);
 
         assertThat(actualExpenses.size()).isEqualTo(1);
         assertThat(actualExpenses.get(0).getDescription()).isEqualTo("Water Bill");
@@ -93,7 +90,7 @@ public class ExpenseRepositoryIntegrationTest {
         return mongoTemplate.find(findByUsernameQuery(username), Expense.class);
     }
 
-    private Expense createExpense(String username, LocalDate transactionDate, double amount, Category category, String description) {
+    private Expense createExpense(String username, LocalDate transactionDate, double amount, String category, String description) {
         return Expense.builder()
                 .username(username)
                 .amount(amount)
@@ -109,10 +106,10 @@ public class ExpenseRepositoryIntegrationTest {
     }
 
     private void initializeData() {
-        expense1 = mongoTemplate.insert(createExpense(USERNAME, todaysDate, 33.99, SHOPPING, "Table"), EXPENSES_COLLECTION);
-        expense2 = mongoTemplate.insert(createExpense(USERNAME, todaysDate, 122.76, UTILITIES, "Water Bill"), EXPENSES_COLLECTION);
-        expense3 = mongoTemplate.insert(createExpense(USERNAME, LocalDate.of(2020, 5, 23), 112.99, ENTERTAINMENT, "Bowling"), EXPENSES_COLLECTION);
-        expense4 = mongoTemplate.insert(createExpense(NEW_USERNAME, LocalDate.of(2020, 5, 1), 120.00, GROCERIES, ""), EXPENSES_COLLECTION);
-        expense5 = mongoTemplate.insert(createExpense(USERNAME, LocalDate.of(2020, 4, 15), 76.99, UTILITIES, "Electric Bill"), EXPENSES_COLLECTION);
+        expense1 = mongoTemplate.insert(createExpense(USERNAME, todaysDate, 33.99, "SHOPPING", "Table"), EXPENSES_COLLECTION);
+        expense2 = mongoTemplate.insert(createExpense(USERNAME, todaysDate, 122.76, "UTILITIES", "Water Bill"), EXPENSES_COLLECTION);
+        expense3 = mongoTemplate.insert(createExpense(USERNAME, LocalDate.of(2020, 5, 23), 112.99, "ENTERTAINMENT", "Bowling"), EXPENSES_COLLECTION);
+        expense4 = mongoTemplate.insert(createExpense(NEW_USERNAME, LocalDate.of(2020, 5, 1), 120.00, "GROCERIES", ""), EXPENSES_COLLECTION);
+        expense5 = mongoTemplate.insert(createExpense(USERNAME, LocalDate.of(2020, 4, 15), 76.99, "UTILITIES", "Electric Bill"), EXPENSES_COLLECTION);
     }
 }
