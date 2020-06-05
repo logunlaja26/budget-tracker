@@ -1,18 +1,12 @@
 package com.lyomann.budgettracker.controller;
 
-import com.google.cloud.firestore.v1.FirestoreAdminClient;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.auth.UserRecord.CreateRequest;
-import com.google.firebase.auth.internal.FirebaseCustomAuthToken;
-import com.google.firebase.auth.internal.FirebaseTokenFactory;
-import com.lyomann.budgettracker.dto.TokenDto;
-import com.lyomann.budgettracker.dto.UserCreationDto;
-import com.lyomann.budgettracker.dto.UserDto;
-import com.lyomann.budgettracker.dto.UserLoginDto;
+import com.lyomann.budgettracker.dto.*;
 import com.lyomann.budgettracker.exception.UserRegistrationException;
+import com.lyomann.budgettracker.service.ExpenseService;
 import com.lyomann.budgettracker.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +22,8 @@ public class BudgetTrackerController {
     private final UserService userService;
 
     private final FirebaseAuth firebaseAuth;
+
+    private final ExpenseService expenseService;
 
     @PostMapping("/users")
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -64,5 +60,16 @@ public class BudgetTrackerController {
             log.error("User was not able to be logged in", ex);
             throw new UserRegistrationException("User login failed.");
         }
+    }
+
+    @PostMapping("/users/{username}/expenses")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void addExpense(@PathVariable String username, @RequestBody ExpenseDto expenseDto) {
+        expenseService.saveExpense(username, expenseDto);
+    }
+
+    @GetMapping("/users/{username}/expenses")
+    public ExpenseListDto getAllExpenses(@PathVariable String username) {
+        return expenseService.getExpenseHistory(username);
     }
 }
