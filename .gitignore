@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+mongo-volume/*
+budget-tracker-firebase-adminsdk.json

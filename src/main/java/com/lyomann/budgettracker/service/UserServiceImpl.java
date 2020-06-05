@@ -3,6 +3,7 @@ package com.lyomann.budgettracker.service;
 import com.lyomann.budgettracker.document.BudgetAllowance;
 import com.lyomann.budgettracker.document.User;
 import com.lyomann.budgettracker.dto.BudgetAllowanceDto;
+import com.lyomann.budgettracker.dto.UserCreationDto;
 import com.lyomann.budgettracker.dto.UserDto;
 import com.lyomann.budgettracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
 
     @Override
-    public void createUser(UserDto userDto) {
-        User user = userRepository.createUser(convertToUser(userDto));
+    public void createUser(UserCreationDto userCreationDto) {
+        User user = userRepository.createUser(convertToUser(userCreationDto));
         log.info("New user has registered - {} with budget allowances {}", user.getUsername(), user.getBudgetAllowances());
     }
 
@@ -46,8 +47,8 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(user, UserDto.class);
     }
 
-    private User convertToUser(UserDto userDto) {
-        return modelMapper.map(userDto, User.class);
+    private User convertToUser(UserCreationDto userCreationDto) {
+        return modelMapper.map(userCreationDto, User.class);
     }
 
     private BudgetAllowance convertToBudgetAllowance(BudgetAllowanceDto budgetAllowanceDto) {

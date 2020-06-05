@@ -3,6 +3,7 @@ package com.lyomann.budgettracker.service;
 import com.lyomann.budgettracker.document.BudgetAllowance;
 import com.lyomann.budgettracker.document.User;
 import com.lyomann.budgettracker.dto.BudgetAllowanceDto;
+import com.lyomann.budgettracker.dto.UserCreationDto;
 import com.lyomann.budgettracker.dto.UserDto;
 import com.lyomann.budgettracker.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,8 +38,10 @@ class UserServiceImplTest {
 
     @Test
     void createUser_convertsUserDtoToUser_thenSavesToDatabase() {
-        UserDto userDto = UserDto.builder()
+        UserCreationDto userDto = UserCreationDto.builder()
+                .email("myemail@gmail.com")
                 .username(USERNAME)
+                .password("1234")
                 .budgetAllowances(singletonList(BudgetAllowanceDto.builder()
                         .category("Video Games")
                         .maxThreshold(50)
