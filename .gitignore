@@ -32,3 +32,6 @@ build/
 
 ### MongoDB ###
 mongo-volume/*
+
+### Firebase ###
+budget-tracker-firebase-adminsdk.json
